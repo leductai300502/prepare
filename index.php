@@ -11,6 +11,7 @@ if(empty($_SESSION['id_user'])) {
 require_once("db.php");
 
 $name = "";
+//Them du lieu vao danh muc
 
 $sql = "SELECT * FROM users WHERE id_user='$_SESSION[id_user]'";
 $result = $conn->query($sql);
@@ -42,7 +43,7 @@ $_SESSION['callFrom'] = "index.php";
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="dist/css/custom.css">
 
 
@@ -58,6 +59,13 @@ $_SESSION['callFrom'] = "index.php";
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
+<?php 
+    //Them du lieu vao danh muc
+    if($_SERVER['REQUEST_METHOD'] === 'POST')
+    {
+      $sql_add = " INSERT INTO group_volunteer (id_user, name , active) VALUES (1,'group thu nhat' ,'1')";
+    }
+    ?>
 <div class="wrapper">
 
   <header class="main-header">
@@ -241,71 +249,9 @@ $_SESSION['callFrom'] = "index.php";
     </nav>
   </header>
   <!-- Left side column. contains the logo and sidebar -->
-  <aside class="main-sidebar">
-    <!-- sidebar: style can be found in sidebar.less -->
-    <section class="sidebar">
-      <!-- Sidebar user panel -->
-      <div class="user-panel">
-        <div class="pull-left image">
-          <?php 
-                $sql = "SELECT * FROM users WHERE id_user='$_SESSION[id_user]'";
-                $result = $conn->query($sql);
-                if($result->num_rows > 0) {
-                  $row = $result->fetch_assoc();
-                  if($row['profileimage'] != '') {
-                    echo '<img src="uploads/profile/'.$row['profileimage'].'" class="img-circle" alt="User Image">';
-                  } else {
-                    echo '<img src="dist/img/avatar5.png" class="img-circle" alt="User Image">';
-                  }
-                }
-                ?>
-        </div>
-        <div class="pull-left info">
-          <p><?php echo $name; ?></p>
-          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-        </div>
-      </div>
-      <!-- sidebar menu  -->
-      <ul class="sidebar-menu" data-widget="tree">
-        <li>
-          <a href="profile.php">
-            <i class="fa fa-user-o"></i> <span>Profile</span>
-          </a>
-        </li>
-        <li class="active">
-          <a href="index.php">
-            <i class="fa fa-newspaper-o"></i> <span>News Feed</span>
-          </a>
-        </li>
-        <li>
-          <a href="messages.php">
-            <i class="fa fa-wechat"></i> <span>Messages</span>
-          </a>
-        </li>
-        <li>
-          <a href="friends.php">
-            <i class="fa fa-users"></i> <span>Friends</span>
-          </a>
-        </li>
-        <li>
-          <a href="pages.php">
-          <i class="fa-light fa-user-group"></i><span>Group</span>
-          </a>
-        </li>
-        <li>
-          <a href="events.php">
-            <i class="fa fa-calendar"></i> <span>Events</span>
-          </a>
-        </li>
-        <li>
-          <a href="photos.php">
-            <i class="fa  fa-file-photo-o"></i> <span>Photos</span>
-          </a>
-        </li>
-      </ul>
-    </section>
-    <!-- /.sidebar -->
-  </aside>
+  <?php
+  require_once("main-sidebar.php");
+  ?>
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -328,6 +274,7 @@ $_SESSION['callFrom'] = "index.php";
             <!-- form start -->
             <form class="form-horizontal" action="addpost.php" method="post" enctype="multipart/form-data">
               <div class="box-body">
+                <div style="padding : 8px; border-radius: 2px"><i class="fa-solid fa-location-dot"></i> Location</div>
                 <div class="form-group">
                   <div class="col-sm-12">
                    <textarea class="form-control" name="description" placeholder="What's on your mind?" name="message"></textarea>
@@ -360,6 +307,7 @@ $_SESSION['callFrom'] = "index.php";
 
                 if($result->num_rows > 0) {
                   $i = 0;
+                  $enable = 0;
                   while($row =  $result->fetch_assoc()) {
                     $i++;
                     ?>
@@ -402,7 +350,21 @@ $_SESSION['callFrom'] = "index.php";
                                <button type="button" id="addLike" data-id="<?php echo $row['id_post']; ?>" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Like</button>
                             <?php
                           }
-                          ?>   
+                          ?>  
+                          <form action="" method="POST">
+                            <button type="submit" name="form_submit" style="cursor : pointer"><i class="fa-solid fa-handshake-angle"></i>Attend</button> 
+                          </form>
+                          <?php
+                          if($enable == 0 && $_SERVER['REQUEST_METHOD'] === 'POST'){
+                            if(isset($_POST['form_submit']))
+                            {
+                              $sql_add= " INSERT INTO group_volunteer (id_group ,id_user, name , active) VALUES ($row[id_post],$_SESSION[id_user],'group $row[id_post]' ,'1')";
+                              $result_add = $conn->query($sql_add);
+                              $enable = 1;
+                              echo('<meta http-equiv="refresh" content="0.5">');
+                            }
+                          }
+                          ?>
                           <?php
                           $sql2 = "SELECT * FROM post WHERE id_post='$row[id_post]'";
                            //from likes

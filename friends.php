@@ -48,7 +48,7 @@ $_SESSION['callFrom'] = "friends.php";
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Google Font -->
   <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
@@ -227,60 +227,9 @@ $_SESSION['callFrom'] = "friends.php";
     </nav>
   </header>
   <!-- Left side column. contains the logo and sidebar -->
-  <aside class="main-sidebar">
-    <!-- sidebar: style can be found in sidebar.less -->
-    <section class="sidebar">
-      <!-- Sidebar user panel -->
-      <div class="user-panel">
-        <div class="pull-left image">
-          <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-        </div>
-        <div class="pull-left info">
-          <p>Alexander Pierce</p>
-          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-        </div>
-      </div>
-      <!-- sidebar menu  -->
-      <ul class="sidebar-menu" data-widget="tree">
-        <li>
-          <a href="profile.php">
-            <i class="fa fa-user-o"></i> <span>Profile</span>
-          </a>
-        </li>
-        <li>
-          <a href="index.php">
-            <i class="fa fa-newspaper-o"></i> <span>News Feed</span>
-          </a>
-        </li>
-        <li>
-          <a href="messages.php">
-            <i class="fa fa-wechat"></i> <span>Messages</span>
-          </a>
-        </li>
-        <li class="active">
-          <a href="friends.php">
-            <i class="fa fa-users"></i> <span>Friends</span>
-          </a>
-        </li>
-        <li>
-          <a href="pages.php">
-            <i class="fa fa-file-o"></i> <span>Pages</span>
-          </a>
-        </li>
-        <li>
-          <a href="events.php">
-            <i class="fa fa-calendar"></i> <span>Events</span>
-          </a>
-        </li>
-        <li>
-          <a href="photos.php">
-            <i class="fa  fa-file-photo-o"></i> <span>Photos</span>
-          </a>
-        </li>
-      </ul>
-    </section>
-    <!-- /.sidebar -->
-  </aside>
+  <?php
+  require_once("main-sidebar.php");
+  ?>
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
